@@ -411,14 +411,15 @@
           },
           "Merchant_Numbers": {
             "type": "array",
-            "description": "Details of banks",
-            "example": [
-              {
-                "MerchantName": "Kenya Power",
-                "MerchantCode": "KPLC12",
-                "Country": "Kenya"
+            "items": {
+              "type": "object",
+              "properties": {
+                "MerchantName": { "example": "Kenya Power" },
+                "MerchantCode": { "example": "KPLC12" },
+                "Country": { "example": "Kenya" }
               }
-            ]
+            },
+            "description": "Details of each provider merchant"
           }
         }
       },
@@ -431,15 +432,16 @@
           "Banks": {
             "type": "array",
             "description": "Details of banks",
-            "example": [
-              {
-                "BankName": "KCBGROUP",
-                "BranchCode": "0142121",
-                "BankCode": "KCB01",
-                "Iban": "14212",
-                "Country": "Kenya"
+            "items": {
+              "type": "object",
+              "properties": {
+                "BankName": { "example": "KCBGROUP" },
+                "BranchCode": { "example": "0142121" },
+                "BankCode": { "example": "KCB01" },
+                "Iban": { "example": "892390" },
+                "Country": { "example": "Kenya" }
               }
-            ]
+            }
           }
         }
       },
@@ -658,17 +660,19 @@
           },
           "Collection_Networks": {
             "type": "array",
-            "items": {},
-            "description": "Route name and instructions for each network",
-            "example": [
-              {
-                "CollectionName": "SAFARICOMKENYA",
-                "CollectionType": "PAYBILL",
-                "SupportDirectDebit": true,
-                "Country": "Kenya",
-                "Instructions": "The application will direct You on how to load your Money through this Direct debit Option."
+            "items": {
+              "type": "object",
+              "properties": {
+                "CollectionName": { "example": "SAFARICOMKENYA" },
+                "CollectionType": { "example": "PAYBILL" },
+                "SupportDirectDebit": { "example": true },
+                "Country": { "example": "Kenya" },
+                "Instructions": {
+                  "example": "The application will direct You on how to load your Money through this Direct debit Option."
+                }
               }
-            ]
+            },
+            "description": "Route name and instructions for each network"
           }
         }
       },
@@ -886,7 +890,7 @@
             "$ref": "#/components/schemas/sender_city"
           },
           "recipientname": {
-            "$ref": "#/components/schemas/sendername",
+            "allOf": [{ "$ref": "#/components/schemas/sendername" }],
             "description": "Full name of recipient"
           },
           "recipient_country_code": {
