@@ -373,10 +373,118 @@
           }
         }
       }
+    },
+    "/collectioncard": {
+      "post": {
+        "tags": ["collection"],
+        "summary": "Charge a card",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardCollectionCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A link that the customer sould visit to make payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/DirectDebitAccepted" }
+                  ],
+                  "properties": {
+                    "vendor_unique_fields": {
+                      "type": "object",
+                      "properties": {
+                        "payment_url": {
+                          "type": "string",
+                          "description": "Link to card 3DS card collection webpage that your user should follow to complete payments",
+                          "example": "https://pay.mastercard.com/904djj3hnkskjdsioF"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refundcollection": {
+      "post": {
+        "tags": ["collection"],
+        "summary": "request a refund for a card charge",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "api_username": {
+                    "$ref": "#/components/schemas/api_username"
+                  },
+                  "reference_number": {
+                    "$ref": "#/components/schemas/client_reference"
+                  },
+                  "refund_reason": {
+                    "type": "string",
+                    "description": "Reason of refund",
+                    "example": "Ordered products were not provided"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request accepted for processing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectDebitAccepted"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CardCollectionCommand": {
+        "allOf": [{ "$ref": "#/components/schemas/GenericQuery" }],
+        "properties": {
+          "route_name": { "$ref": "#/components/schemas/route_name" },
+          "debitor_name": {
+            "$ref": "#/components/schemas/debitor_name"
+          },
+          "debitor_mobile": { "$ref": "#/components/schemas/mobile" },
+          "debitor_currency_code": {
+            "$ref": "#/components/schemas/mobile"
+          },
+          "debitor_country_code": {
+            "$ref": "#/components/schemas/country_code"
+          },
+          "reference_number": {
+            "$ref": "#/components/schemas/client_reference"
+          },
+          "amount": { "$ref": "#/components/schemas/amount" },
+          "client_daytime": {
+            "$ref": "#/components/schemas/client_datetime"
+          },
+          "redirect_url": {
+            "type": "string",
+            "description": "The url the client wants the user to be redirected to after completing payment",
+            "example": "https://yoursite.com/thankyou"
+          }
+        }
+      },
       "MsisdnBalanceQuery": {
         "type": "object",
         "allOf": [{ "$ref": "#/components/schemas/GenericQuery" }],
@@ -488,6 +596,7 @@
           }
         }
       },
+
       "ExchangeRateResult": {
         "type": "object",
         "properties": {
