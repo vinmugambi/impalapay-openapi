@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "ImpalaPay Switch REST API",
-    "description": "Collect and disburse payments using the ImpalaPay switch API. \n \n The IP address of the client application MUST first be whitelisted to call these endpoints",
+    "title": "RESTful API for ImpalaPay switch",
+    "description": "ImpalaPay Ltd is an independent Unified Payment and Messaging platform Provider offering  mobile  money  transfer,  mobile  banking  and  related  electronic  commerce services. Impala Pay has been offering electronic money transfer services since 2004, well  before  the  current  market  acceptability.  Impala  Pay  is  a  limited  liability companies incorporated and based in Kenya with subsidiaries in Dubai and representations in 6 other countries. ImpalaPay is a mobile remittance and airtime top up hub and an aggregate partner to the Airtel Africa network. Airtel is present in 18 countries in Africa. The  Impalapay messaging and remittance Platform is software that allows for remittance to Various MNOs, MTOs and Banks across the world through a web based interface (API). This document  serves  to  describe  to  software  integrators  the  various  commands  used  to interact with the platform.",
     "version": "0.1"
   },
   "servers": [{ "url": "https://staging.impalapay.net" }],
@@ -77,6 +77,7 @@
       "post": {
         "tags": ["collection"],
         "summary": "Check the status of a transaction",
+        "description": "This functionality is particularly useful in case the Client application does not receive a response when attempting to remit money (Section 4.1.2) owing to an HTTP timeout or  other  Internet  connectivity  disruption,  this  can  also  be  used  in  determining  the status of any transaction within the system(for both synchronous and asynchronous transactions)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -108,6 +109,7 @@
         }
       ],
       "post": {
+        "description": "A Session Id is a text that is used for identification. All other client requests must be accompanied by a Session Id in order for the server to successfully process them. It is temporal  in  nature  that  is,  it  expires  after  a  predetermined  amount  of  time.  For subsequent client requests, a new one must be requested for. The  Session  Id  is  always  unique.  For  security  reasons  it  is  recommended  that  the Client application safeguards the Session Ids it receives as they can be used to carry out legitimate transactions.   In order to receive a Session Id, the client application requests the server through the instruction described in this section. Upon successful authentication, the Session Id is sent to a particular URL that is preconfigured. This URL can only be altered with the assistance of the server system administrator.   The session Id can also be supplied in the same request as a response, the Client can provide an IP which is whitelisted on the server side. The Provided IP can be used to make session requests to the server",
         "tags": ["authentication"],
         "summary": "Authenticate client and acquire a session id (authentication token)",
         "requestBody": {
@@ -136,6 +138,7 @@
     "/balance": {
       "post": {
         "tags": ["account"],
+        "description": "Allows for one to query the balance of money. The float value is in the main account currency (USD, GBP...etc.) and the country value is in the local currency. (Only used for clients with virtual float accounts). ",
         "summary": "Query float and balance",
         "requestBody": {
           "content": {
@@ -243,6 +246,7 @@
       "post": {
         "tags": ["account"],
         "summary": "Query the exchange rate of a currency against the US Dollar",
+        "description": "The exchange rate of a country is measured against the Clients Base Currency. It is updated  approximately  once  a  day.  This  query  allows  the  Client  application  to determine what will be used at that instant. ",
         "requestBody": {
           "content": {
             "application/json": {
@@ -269,6 +273,7 @@
     "/verifyBeneficiary": {
       "post": {
         "summary": "Verify mobile subscriber details with provider",
+        "description": "This  functionality  is  particularly  useful  when  an  IMT  has  to  confirm  or  verify  the beneficiary details",
         "tags": ["transfers"],
         "requestBody": {
           "content": {
@@ -296,6 +301,7 @@
     "/bankQuery": {
       "post": {
         "summary": "Query supported banks",
+        "description": "Allows  for  an  IMT  to query all  the  available  banks  and  bank codes.",
         "tags": ["transfers"],
         "requestBody": {
           "content": {
@@ -323,6 +329,7 @@
     "/billPaymentQuery": {
       "post": {
         "summary": "Query bill payment merchants",
+        "description": "Allows  for  an  IMT  to  query  all  the  available  merchants/bill payment codes for routing payments",
         "tags": ["bills"],
         "requestBody": {
           "content": {
@@ -350,6 +357,7 @@
     "/msisdnbalance": {
       "post": {
         "summary": "As an IMT your msisdn balance in specific country",
+        "description": "Allows for an IMT to query balance of their msisd account in a specific country. The country value is in the local currency",
         "tags": ["account"],
         "requestBody": {
           "content": {
